@@ -1,0 +1,12 @@
+# build
+dist
+
+# .env
+.env
+
+# ide
+.idea
+
+# npm
+node_modules
+package-lock.json
