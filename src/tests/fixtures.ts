@@ -6,7 +6,14 @@ let mongod: MongoMemoryServer;
 
 export async function setupDB() {
     logger.info('Setting up the in-memory database...');
-    mongod = await MongoMemoryServer.create();
+    mongod = await MongoMemoryServer.create({
+        dispose: {
+            cleanup: {
+                doCleanup: true,
+                force: true,
+            },
+        },
+    });
 }
 
 export async function teardownDB() {
