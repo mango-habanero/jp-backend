@@ -1,6 +1,6 @@
-import pino from "pino";
-import {config} from "./config";
-import moment from "moment-timezone";
+import pino from 'pino';
+import { config } from './config';
+import moment from 'moment-timezone';
 
 export const logger = pino({
     name: config.EXPRESS.SERVICE_IDENTITY,
@@ -8,5 +8,6 @@ export const logger = pino({
     formatters: {
         level: (label) => ({ level: label.toUpperCase() }),
     },
-    timestamp: () => `,"time":"${moment(new Date(Date.now())).tz(config.EXPRESS.TIMEZONE).format("DD-MM-YYYY HH:mm A")}"`,
-})
+    timestamp: () =>
+        `,"time":"${moment(new Date(Date.now())).tz(config.EXPRESS.TIMEZONE).format('DD-MM-YYYY HH:mm A')}"`,
+});
