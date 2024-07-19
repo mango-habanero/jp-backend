@@ -1,0 +1,14 @@
+# build
+dist
+
+# .env
+.env
+
+# ide
+.idea
+
+# npm
+node_modules
+
+# test
+test
