@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/mango-habanero/jp-backend/compare/v1.0.1...v1.1.0) (2024-07-19)
+
+
+### Bug Fixes
+
+* **workflows:** Provisions mongod service for CI/CD testing. ([1cc58bb](https://github.com/mango-habanero/jp-backend/commit/1cc58bb3a80ac5e3e4fa4b328e3707653be40ed7))
+
+
+### Features
+
+* **database:** Integrate database. ([#5](https://github.com/mango-habanero/jp-backend/issues/5)) ([77710bb](https://github.com/mango-habanero/jp-backend/commit/77710bbde22484953a84b780bafa5a7326ed6097))
+
 ## [1.0.1](https://github.com/mango-habanero/jp-backend/compare/v1.0.0...v1.0.1) (2024-07-19)
 
 
