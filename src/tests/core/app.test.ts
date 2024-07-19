@@ -1,5 +1,5 @@
 import { describe, it } from 'mocha';
-import app from '../app';
+import app from '../../core/app';
 import request from 'supertest';
 
 describe('Base API tests.', () => {

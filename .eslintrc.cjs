@@ -18,8 +18,8 @@ module.exports = {
     plugins: ['@typescript-eslint', 'mocha'],
     root: true,
     rules: {
+        '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
         '@typescript-eslint/no-unused-vars': 'error',
-        '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
         'mocha/no-exclusive-tests': 'error',
         'mocha/no-pending-tests': 'error',
         'mocha/no-skipped-tests': 'warn',
