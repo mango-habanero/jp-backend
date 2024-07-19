@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
-interface ExpressConfig {
+type ExpressConfig = {
     CORS_ORIGINS: string[];
     ENVIRONMENT: string;
     HOST: string;
@@ -8,17 +8,17 @@ interface ExpressConfig {
     PORT: number;
     SERVICE_IDENTITY: string;
     TIMEZONE: string;
-}
+};
 
-interface Config {
+type Config = {
     EXPRESS: ExpressConfig;
-}
+};
 
-function toList (value: string | undefined): string[] | undefined {
+function toList(value: string | undefined): string[] | undefined {
     if (value === undefined) {
-        console.error('Error parsing string to list.')
+        console.error('Error parsing string to list.');
     } else {
-        return value.split(',')
+        return value.split(',');
     }
 }
 
@@ -26,7 +26,7 @@ dotenv.config();
 
 export const config: Config = {
     EXPRESS: {
-        CORS_ORIGINS: toList(process.env.CORS_ORIGINS)?? ['http://localhost:3000'],
+        CORS_ORIGINS: toList(process.env.CORS_ORIGINS) ?? ['http://localhost:3000'],
         ENVIRONMENT: process.env.ENVIRONMENT ?? 'development',
         HOST: process.env.DOMAIN ?? 'localhost',
         LOG_LEVEL: process.env.LOG_LEVEL ?? 'info',
