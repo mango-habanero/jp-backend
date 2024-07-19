@@ -1,9 +1,10 @@
 import compression from 'compression';
-import { config } from './config';
+import { config } from '../config';
 import cors from 'cors';
 import express, { Express } from 'express';
 
-import healthCheckRouter from './routes/health';
+import healthCheckRouter from '../routes/health';
+import initializeDatabase from './database';
 
 const app: Express = express();
 app.use(
@@ -19,6 +20,11 @@ app.use(
 );
 app.use(compression());
 app.use(express.json());
+
+// initialize database connection.
+initializeDatabase();
+
+// load routes
 app.use('/health-check', healthCheckRouter);
 
 export default app;
