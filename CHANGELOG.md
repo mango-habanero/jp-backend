@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/mango-habanero/jp-backend/compare/v1.0.0...v1.0.1) (2024-07-19)
+
+
+### Bug Fixes
+
+* **CI/CD:** Stabilize CI/CD Pipeline and Implement Linting Fixes. ([#4](https://github.com/mango-habanero/jp-backend/issues/4)) ([9418cbb](https://github.com/mango-habanero/jp-backend/commit/9418cbbfd5b6d48c626beecda280d571de81d9c8))
+* **tests:** Fixes references to test files. ([984948f](https://github.com/mango-habanero/jp-backend/commit/984948ff804ea28cf7f5505a9bd0845fe1f3046b))
+
 # 1.0.0 (2024-07-19)
 
 
