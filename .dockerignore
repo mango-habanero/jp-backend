@@ -1,6 +1,10 @@
 # build
 dist
 
+# coverage
+coverage
+.nyc_output
+
 # .env
 .env
 

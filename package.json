@@ -4,12 +4,13 @@
     "main": "src/index.ts",
     "scripts": {
         "build": "npx tsc",
+        "coverage": "codecov",
         "dev": "nodemon src/index.ts",
         "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
         "lint": "eslint --ext .js,.ts src",
         "prepare": "husky || true",
         "start": "node dist/index.js",
-        "test": "mocha"
+        "test": "nyc --reporter=lcov mocha"
     },
     "keywords": [],
     "author": "",
@@ -36,6 +37,7 @@
         "@types/supertest": "^6.0.2",
         "@typescript-eslint/eslint-plugin": "^7.16.1",
         "@typescript-eslint/parser": "^7.16.1",
+        "codecov": "^3.8.3",
         "concurrently": "^8.2.2",
         "eslint": "^8.57.0",
         "globals": "^15.8.0",
@@ -43,6 +45,7 @@
         "lint-staged": "^15.2.7",
         "mocha": "^10.6.0",
         "nodemon": "^3.1.4",
+        "nyc": "^17.0.0",
         "pino-pretty": "^11.2.1",
         "prettier": "^3.3.3",
         "semantic-release": "^24.0.0",

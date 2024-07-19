@@ -1,5 +1,7 @@
 ## Backend Service
 
+[![codecov](https://codecov.io/gh/mango-habanero/jp-backend/graph/badge.svg?token=w3PT7bqHHg)](https://codecov.io/gh/mango-habanero/jp-backend)
+
 A sample backend express js application to showcase fullstack abilities for the jungopharm interview process.
 
 ### Pre-requisites
