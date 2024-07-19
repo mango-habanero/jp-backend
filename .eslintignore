@@ -1,5 +1,12 @@
-# build
-dist
+# coverage
+coverage
+.nyc_output
 
-#npm
+# .env
+.env
+
+# ide
+.idea
+
+# npm
 node_modules

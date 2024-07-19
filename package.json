@@ -4,6 +4,7 @@
     "main": "src/index.ts",
     "scripts": {
         "build": "npx tsc",
+        "clean": "rm -rf coverage -rf dist -rf .nyc_output",
         "coverage": "codecov",
         "dev": "nodemon src/index.ts",
         "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
@@ -40,6 +41,7 @@
         "codecov": "^3.8.3",
         "concurrently": "^8.2.2",
         "eslint": "^8.57.0",
+        "eslint-plugin-mocha": "^10.4.3",
         "globals": "^15.8.0",
         "husky": "^9.1.1",
         "lint-staged": "^15.2.7",
