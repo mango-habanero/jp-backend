@@ -1,4 +1,3 @@
-/* eslint-env node */
 module.exports = {
     env: {
         mocha: true,
@@ -26,4 +25,12 @@ module.exports = {
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'prefer-promise-reject-errors': 'off',
     },
+    overrides: [
+        {
+            files: ['seed/**/*.ts', 'test/**/*.ts'],
+            parserOptions: {
+                project: ['./tsconfig.json', './seed/tsconfig.json', './test/tsconfig.json'],
+            },
+        },
+    ],
 };

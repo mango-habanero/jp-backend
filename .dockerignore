@@ -13,3 +13,9 @@ coverage
 
 # npm
 node_modules
+
+# seed
+seed
+
+# tests
+tests

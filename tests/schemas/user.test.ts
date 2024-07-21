@@ -1,4 +1,4 @@
-import { Role, User } from '../../schemas/user';
+import { Role, User } from '../../src/schemas/user';
 import { expect } from 'earl';
 import { setupDB, teardownDB } from '../fixtures';
 import { after, before, describe, it } from 'mocha';
