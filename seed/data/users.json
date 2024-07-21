@@ -6998,5 +6998,12 @@
         "email": "karen97@example.net",
         "password": "QXp)6ItgfM",
         "role": "user"
+    },
+    {
+        "userId": "1001",
+        "name": "Mango Habanero",
+        "email": "main@mango-habanero.dev",
+        "password": "password123",
+        "role": "admin"
     }
 ]

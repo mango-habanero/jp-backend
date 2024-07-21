@@ -5,6 +5,7 @@ import { config } from '../src/config';
 import dotenv from 'dotenv';
 import { logger } from '../src/core/logger';
 import { User } from '../src/schemas/user';
+import { Product } from '../src/schemas/product';
 
 dotenv.config();
 
@@ -61,21 +62,55 @@ async function seedDatabase<T extends Document>(
             data = rawData;
         }
 
-        logger.debug(`inserting data for model: ${model.modelName}`);
+        logger.debug(`inserting data for model: ${model.modelName}.`);
         await model.init();
         await model.create(data);
 
-        logger.info('seeding completed.');
-        process.exit(0);
+        logger.info(`seeding ${model.modelName.toLowerCase()}s completed.`);
     } catch (error) {
         logger.error(`Error seeding data: ${error}`);
         process.exit(1);
     }
 }
 
+async function verifyAllUsers() {
+    logger.info('verifying all users...');
+    const users = await User.find({});
+    const bulkOps = users.map((user) => ({
+        updateOne: {
+            filter: { _id: user._id },
+            update: { $set: { isVerified: true } },
+        },
+    }));
+    await User.bulkWrite(bulkOps);
+    logger.info('all users verified.');
+}
+
+async function seedProducts() {
+    logger.info('seeding products...');
+    await seedDatabase(Product, 'products.json', { deduplicate: true, uniqueField: 'productId' });
+}
+
 async function seedUsers() {
     logger.info('seeding users...');
     await seedDatabase(User, 'users.json', { deduplicate: true, uniqueField: 'email' });
+    await verifyAllUsers();
 }
 
-seedUsers();
+async function main() {
+    try {
+        logger.debug('connecting to the database...');
+        await mongoose.connect(config.MONGO_URI);
+
+        await Promise.all([seedProducts(), seedUsers()]);
+
+        logger.info('seeding completed.');
+    } catch (error) {
+        logger.error(`Error seeding data: ${error}`);
+    } finally {
+        await mongoose.disconnect();
+        process.exit(0);
+    }
+}
+
+main();

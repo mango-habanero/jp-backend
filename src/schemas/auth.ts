@@ -17,13 +17,9 @@ export const verifyEmailSchema = Joi.object({
 });
 
 export const forgotPasswordSchema = Joi.object({
-    body: Joi.object({
-        email: Joi.string().email().required(),
-    }),
+    email: Joi.string().email().required(),
 });
 
 export const refreshTokenSchema = Joi.object({
-    body: Joi.object({
-        token: Joi.string().required(),
-    }),
+    token: Joi.string().required(),
 });
