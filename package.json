@@ -10,6 +10,7 @@
         "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
         "lint": "eslint --ext .js,.ts src",
         "prepare": "husky || true",
+        "seed": "ts-node seed/seed.ts",
         "start": "node dist/index.js",
         "test": "nyc --reporter=lcov mocha"
     },
