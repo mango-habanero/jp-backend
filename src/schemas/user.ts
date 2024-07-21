@@ -1,4 +1,4 @@
-import { Document, Model, model, Schema } from 'mongoose';
+import { Document, model, Schema } from 'mongoose';
 import { AutoIncrementID } from '@typegoose/auto-increment';
 import bcrypt from 'bcrypt';
 import { config } from '../config';
@@ -10,6 +10,7 @@ export enum Role {
 
 interface User {
     email: string;
+    isVerified: boolean;
     name: string;
     password: string;
     role: Role;
@@ -20,13 +21,15 @@ interface UserDocument extends User, Document {
     matchPassword: (password: string) => Promise<boolean>;
 }
 
-type UserModel = Model<UserDocument>;
-
 const userSchema = new Schema({
     email: {
         required: true,
         type: String,
         unique: true,
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
     },
     name: {
         required: true,
@@ -43,7 +46,6 @@ const userSchema = new Schema({
         type: String,
     },
     userId: {
-        required: true,
         type: Number,
         unique: true,
     },
@@ -64,4 +66,4 @@ userSchema.pre<UserDocument>('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-export const User = model<UserDocument, UserModel>('User', userSchema);
+export const User = model<UserDocument>('User', userSchema);

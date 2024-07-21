@@ -3,6 +3,7 @@ import { config } from '../config';
 import cors from 'cors';
 import express, { Express } from 'express';
 
+import authRouter from '../routes/auth';
 import healthCheckRouter from '../routes/health';
 import initializeDatabase from './database';
 
@@ -26,5 +27,6 @@ initializeDatabase();
 
 // load routes
 app.use('/health-check', healthCheckRouter);
+app.use('/api/auth', authRouter);
 
 export default app;
