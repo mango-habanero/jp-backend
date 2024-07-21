@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/mango-habanero/jp-backend/compare/v1.2.0...v1.3.0) (2024-07-21)
+
+
+### Features
+
+* **product:** Implement Products API. ([#8](https://github.com/mango-habanero/jp-backend/issues/8)) ([abb5c2f](https://github.com/mango-habanero/jp-backend/commit/abb5c2fd5b544fd15a6a35333b4c51c6613583aa))
+* **seed:** Implement database Seeding ([#7](https://github.com/mango-habanero/jp-backend/issues/7)) ([e6156d6](https://github.com/mango-habanero/jp-backend/commit/e6156d6400c89a205d5eb905f8ff4de33ed532ef))
+
 # [1.2.0](https://github.com/mango-habanero/jp-backend/compare/v1.1.0...v1.2.0) (2024-07-21)
 
 
