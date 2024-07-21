@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/mango-habanero/jp-backend/compare/v1.1.0...v1.2.0) (2024-07-21)
+
+
+### Features
+
+* **auth:** Implements auth feature. ([#6](https://github.com/mango-habanero/jp-backend/issues/6)) ([9db5b34](https://github.com/mango-habanero/jp-backend/commit/9db5b342c0a1e9c8120fe70d6f1a69c18e6c8533))
+
 # [1.1.0](https://github.com/mango-habanero/jp-backend/compare/v1.0.1...v1.1.0) (2024-07-19)
 
 
