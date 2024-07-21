@@ -71,3 +71,11 @@ A sample backend express js application to showcase fullstack abilities for the 
     ```shell
     npm test
     ```
+
+
+### (Optional) Seeding database
+
+1. **Seed database**
+   ```shell
+      npm run seed
+   ```
