@@ -37,14 +37,20 @@ router.get('/:productId', async (req, res) => {
     }
 });
 
-router.post('/', authorize(['admin']), validateRequest(createProductSchema), async (req, res) => {
-    try {
-        const product = await createProduct(req.body);
-        res.status(201).json(product);
-    } catch (error) {
-        await handleError(error, res);
-    }
-});
+router.post(
+    '/',
+    authenticateToken,
+    authorize(['admin']),
+    validateRequest(createProductSchema),
+    async (req, res) => {
+        try {
+            const product = await createProduct(req.body);
+            res.status(201).json(product);
+        } catch (error) {
+            await handleError(error, res);
+        }
+    },
+);
 
 router.put(
     '/:productId',
