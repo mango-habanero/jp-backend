@@ -19,7 +19,6 @@
     "license": "ISC",
     "description": "A sample backend REST API application to showcase fullstack abilities for the jungopharm interview process.",
     "dependencies": {
-        "@typegoose/auto-increment": "^4.5.0",
         "bcrypt": "^5.1.1",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
