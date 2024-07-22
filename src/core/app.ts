@@ -4,6 +4,7 @@ import cors from 'cors';
 import express, { Express } from 'express';
 
 import authRouter from '../routes/auth';
+import cartRouter from '../routes/cart';
 import productRouter from '../routes/product';
 import healthCheckRouter from '../routes/health';
 import initializeDatabase from './database';
@@ -29,6 +30,7 @@ initializeDatabase();
 // load routes
 app.use('/health-check', healthCheckRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/cart', cartRouter);
 app.use('/api/products', productRouter);
 
 export default app;

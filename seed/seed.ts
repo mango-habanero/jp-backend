@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import { logger } from '../src/core/logger';
 import { User } from '../src/schemas/user';
 import { Product } from '../src/schemas/product';
+import { Cart } from '../src/schemas/cart';
 
 dotenv.config();
 
@@ -97,12 +98,17 @@ async function seedUsers() {
     await verifyAllUsers();
 }
 
+async function seedCart() {
+    logger.info('seeding cart...');
+    await seedDatabase(Cart, 'shopping_cart.json');
+}
+
 async function main() {
     try {
         logger.debug('connecting to the database...');
         await mongoose.connect(config.MONGO_URI);
 
-        await Promise.all([seedProducts(), seedUsers()]);
+        await Promise.all([seedProducts(), seedUsers(), seedCart()]);
 
         logger.info('seeding completed.');
     } catch (error) {

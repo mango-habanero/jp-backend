@@ -1,14 +1,14 @@
-// src/middleware/auth.ts
-import { Request, Response, NextFunction } from 'express';
-import { jwtVerify, JWTPayload } from 'jose';
+import { NextFunction, Request, Response } from 'express';
+import { JWTPayload, jwtVerify } from 'jose';
 import { UnauthorizedError } from '../core/errors';
 import { Blacklist } from '../schemas/blacklist';
 import { handleError } from '../tools/helpers';
-
-const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+import { config } from '../config';
+import { UserPayload } from '../types/express';
+import { logger } from '../core/logger';
 
 export interface AuthenticatedRequest extends Request {
-    user?: JWTPayload;
+    user?: UserPayload & JWTPayload;
 }
 
 export const authenticateToken = async (
@@ -27,9 +27,14 @@ export const authenticateToken = async (
             throw new UnauthorizedError('Token is blacklisted');
         }
 
-        const { payload } = await jwtVerify(token, secret);
-        req.user = payload;
-        next();
+        try {
+            const { payload } = await jwtVerify<UserPayload>(token, config.EXPRESS.JWT_SECRET);
+            req.user = payload;
+            next();
+        } catch (error) {
+            logger.error(`Invalid Token: ${error}`);
+            throw new UnauthorizedError('Invalid Token.');
+        }
     } catch (err) {
         await handleError(err, res);
     }
@@ -38,7 +43,7 @@ export const authenticateToken = async (
 export const authorize = (roles: string[]) => {
     return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
         const role = req.user?.role;
-        if (role && roles.includes(role as string)) {
+        if (role && roles.includes(role)) {
             next();
         } else {
             res.status(403).send('Forbidden');

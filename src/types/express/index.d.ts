@@ -1,7 +1,13 @@
 import { JWTPayload } from 'jose';
 
+export interface UserPayload {
+    email: string;
+    role: string;
+    userId: string;
+}
+
 declare module 'express-serve-static-core' {
     interface Request {
-        user?: JWTPayload;
+        user?: UserPayload & JWTPayload;
     }
 }
