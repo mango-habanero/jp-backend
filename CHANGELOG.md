@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/mango-habanero/jp-backend/compare/v1.3.0...v1.4.0) (2024-07-22)
+
+
+### Features
+
+* **cart:** Implements cart API. ([#9](https://github.com/mango-habanero/jp-backend/issues/9)) ([4acd01f](https://github.com/mango-habanero/jp-backend/commit/4acd01f98ca5b46a9efc85bf9b4a95c8105c0a18))
+
 # [1.3.0](https://github.com/mango-habanero/jp-backend/compare/v1.2.0...v1.3.0) (2024-07-21)
 
 
