@@ -1,5 +1,4 @@
 import { Document, model, Schema } from 'mongoose';
-import { AutoIncrementID } from '@typegoose/auto-increment';
 import bcrypt from 'bcrypt';
 import { config } from '../config';
 
@@ -55,8 +54,6 @@ userSchema.methods.matchPassword = async function (this: UserDocument, enteredPa
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userSchema.plugin(AutoIncrementID, { field: 'userId', startAt: 1 });
-
 userSchema.pre<UserDocument>('save', async function (next) {
     if (!this.isModified('password')) {
         next();
@@ -64,6 +61,14 @@ userSchema.pre<UserDocument>('save', async function (next) {
 
     const salt = await bcrypt.genSalt(config.EXPRESS.SALT_ROUNDS);
     this.password = await bcrypt.hash(this.password, salt);
+
+    if (this.userId) {
+        next();
+    } else {
+        const lastUser = await User.findOne({}, {}, { sort: { userId: -1 } });
+        this.userId = lastUser ? lastUser.userId + 1 : 1;
+        next();
+    }
 });
 
 export const User = model<UserDocument>('User', userSchema);
