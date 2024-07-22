@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/mango-habanero/jp-backend/compare/v1.4.0...v1.5.0) (2024-07-22)
+
+
+### Features
+
+* **order:** Implement Order API. ([#10](https://github.com/mango-habanero/jp-backend/issues/10)) ([2f74b5f](https://github.com/mango-habanero/jp-backend/commit/2f74b5ff8f9e85a5a251f190796a3b04768715da))
+
 # [1.4.0](https://github.com/mango-habanero/jp-backend/compare/v1.3.0...v1.4.0) (2024-07-22)
 
 
