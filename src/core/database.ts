@@ -7,10 +7,8 @@ const initializeDatabase = async () => {
         try {
             const conn = await mongoose.connect(config.MONGO_URI);
             logger.info(`MongoDB connected successfully to: ${conn.connection.host}`);
-        } catch (error: unknown) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            console.error(`Error: ${error.message}`);
+        } catch (error) {
+            logger.error(`MongoDB connection error: ${error}.`);
             process.exit(1);
         }
     }
