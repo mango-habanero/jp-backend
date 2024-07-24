@@ -1,24 +1,25 @@
-import express from 'express';
-import { validatePaginatedRequest, validateRequest } from '../middleware/validate';
-import { createProductSchema, updateProductSchema } from '../schemas/product';
-import { authenticateToken, authorize } from '../middleware/auth';
+import { MESSAGES } from '@/core/constants';
+import { authenticateToken, authorize } from '@/middleware/auth';
+import { validatePaginatedRequest, validateRequest } from '@/middleware/validate';
+import { createProductSchema, updateProductSchema } from '@/schemas/product';
 import {
     createProduct,
     deleteProduct,
     getProduct,
     getProducts,
     updateProduct,
-} from '../services/product';
-import { handleError } from '../tools/helpers';
+} from '@/services/product';
+import { errorResponse, handleError, successResponse } from '@/tools/helpers';
+import express from 'express';
 
 const router = express.Router();
 
 router.get('/', validatePaginatedRequest, async (req, res) => {
     try {
-        const cursor = req.query.cursor as string;
         const limit = parseInt(req.query.limit as string);
+        const offset = parseInt(req.query.offset as string);
 
-        const result = await getProducts(cursor, limit);
+        const result = await getProducts(limit, offset);
         res.json(result);
     } catch (error) {
         await handleError(error, res);
@@ -29,7 +30,7 @@ router.get('/:productId', async (req, res) => {
     try {
         const product = await getProduct(req.params.productId);
         if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
+            return await errorResponse(res, MESSAGES.PRODUCT_NOT_FOUND, 404);
         }
         res.json(product);
     } catch (error) {
@@ -45,7 +46,7 @@ router.post(
     async (req, res) => {
         try {
             const product = await createProduct(req.body);
-            res.status(201).json(product);
+            return await successResponse(res, [product], MESSAGES.PRODUCT_CREATED, 201);
         } catch (error) {
             await handleError(error, res);
         }
@@ -61,9 +62,9 @@ router.put(
         try {
             const product = await updateProduct(req.params.productId, req.body);
             if (!product) {
-                return res.status(404).json({ message: 'Product not found' });
+                return await errorResponse(res, MESSAGES.PRODUCT_UPDATED, 404);
             }
-            res.json(product);
+            return await successResponse(res, [product], MESSAGES.PRODUCT_UPDATED, 200);
         } catch (error) {
             await handleError(error, res);
         }
@@ -72,11 +73,8 @@ router.put(
 
 router.delete('/:productId', authenticateToken, authorize(['admin']), async (req, res) => {
     try {
-        const product = await deleteProduct(req.params.productId);
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-        res.status(204).end();
+        await deleteProduct(req.params.productId);
+        return await successResponse(res, [], MESSAGES.PRODUCT_DELETED, 204);
     } catch (error) {
         await handleError(error, res);
     }

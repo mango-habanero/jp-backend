@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { Document, model, Schema } from 'mongoose';
 
-interface Product {
+export interface IProduct {
     category: string;
     description: string;
     imageUrl: string;
@@ -11,7 +11,7 @@ interface Product {
     stockQuantity: number;
 }
 
-export interface ProductDocument extends Product, Document {}
+export interface ProductDocument extends IProduct, Document {}
 
 export const createProductSchema = Joi.object({
     name: Joi.string().required(),

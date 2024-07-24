@@ -1,11 +1,9 @@
+import { MESSAGES } from '@/core/constants';
+import { checkBlacklist, verifyToken } from '@/services/auth';
+import { errorResponse, handleError } from '@/tools/helpers';
+import { UserPayload } from '@/types/express';
 import { NextFunction, Request, Response } from 'express';
-import { JWTPayload, jwtVerify } from 'jose';
-import { UnauthorizedError } from '../core/errors';
-import { Blacklist } from '../schemas/blacklist';
-import { handleError } from '../tools/helpers';
-import { config } from '../config';
-import { UserPayload } from '../types/express';
-import { logger } from '../core/logger';
+import { JWTPayload } from 'jose';
 
 export interface AuthenticatedRequest extends Request {
     user?: UserPayload & JWTPayload;
@@ -15,26 +13,19 @@ export const authenticateToken = async (
     req: AuthenticatedRequest,
     res: Response,
     next: NextFunction,
-) => {
-    const authHeader = req.headers['authorization'];
+): Promise<void> => {
+    const authHeader = req.headers.authorization;
     const token = authHeader?.split(' ')[1];
 
-    if (!token) return res.sendStatus(401);
+    if (!token) {
+        await errorResponse(res, MESSAGES.NO_TOKENS_PROVIDED, 400);
+        return;
+    }
 
     try {
-        const blacklistedToken = await Blacklist.findOne({ token });
-        if (blacklistedToken) {
-            throw new UnauthorizedError('Token is blacklisted');
-        }
-
-        try {
-            const { payload } = await jwtVerify<UserPayload>(token, config.EXPRESS.JWT_SECRET);
-            req.user = payload;
-            next();
-        } catch (error) {
-            logger.error(`Invalid Token: ${error}`);
-            throw new UnauthorizedError('Invalid Token.');
-        }
+        await checkBlacklist(token);
+        req.user = await verifyToken(token);
+        next();
     } catch (err) {
         await handleError(err, res);
     }
@@ -46,7 +37,10 @@ export const authorize = (roles: string[]) => {
         if (role && roles.includes(role)) {
             next();
         } else {
-            res.status(403).send('Forbidden');
+            res.status(403).json({
+                message: MESSAGES.NOT_AUTHORIZED,
+                status: 1,
+            });
         }
     };
 };

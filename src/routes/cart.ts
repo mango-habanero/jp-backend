@@ -1,29 +1,28 @@
+import { MESSAGES } from '@/core/constants';
+import { authenticateToken } from '@/middleware/auth';
+import { validateRequest } from '@/middleware/validate';
+import { addCartItemSchema, removeCartItemSchema } from '@/schemas/cart';
+import { addItemToCart, getCartByUserId, removeItemFromCart } from '@/services/cart';
+import { handleError, successResponse, validateRequestField } from '@/tools/helpers';
 import express from 'express';
-import { authenticateToken } from '../middleware/auth';
-import { handleError } from '../tools/helpers';
-import { addItemToCart, removeItemFromCart, getCartByUserId } from '../services/cart';
-import { validateRequest } from '../middleware/validate';
-import { addCartItemSchema, removeCartItemSchema } from '../schemas/cart';
 
 const router = express.Router();
 
 router.get('/', authenticateToken, async (req, res) => {
-    const userId = req.user?.userId;
-    if (!userId) {
-        return res.status(401).send('Not logged in.');
+    const userId = await validateRequestField(req.user?.userId, res, MESSAGES.INVALID_REQUEST, 400);
+    try {
+        const cart = await getCartByUserId(userId);
+        return await successResponse(res, cart, MESSAGES.CART_LOADED_SUCCESSFULLY);
+    } catch (error) {
+        await handleError(error, res);
     }
-    const cart = await getCartByUserId(userId);
-    res.json(cart);
 });
 
 router.post('/add', authenticateToken, validateRequest(addCartItemSchema), async (req, res) => {
+    const userId = await validateRequestField(req.user?.userId, res, MESSAGES.INVALID_REQUEST, 400);
     try {
-        const userId = req.user?.userId;
-        if (!userId) {
-            return res.status(401).send('Not logged in.');
-        }
         const cartItem = await addItemToCart(userId, req.body.productId, req.body.quantity);
-        res.status(201).json(cartItem);
+        return await successResponse(res, [cartItem], MESSAGES.ADDED_TO_CART_SUCCESSFULLY);
     } catch (error) {
         await handleError(error, res);
     }
@@ -34,13 +33,15 @@ router.post(
     authenticateToken,
     validateRequest(removeCartItemSchema),
     async (req, res) => {
+        const userId = await validateRequestField(
+            req.user?.userId,
+            res,
+            MESSAGES.INVALID_REQUEST,
+            401,
+        );
         try {
-            const userId = req.user?.userId;
-            if (!userId) {
-                return res.status(401).send('Not logged in.');
-            }
-            const cartItem = await removeItemFromCart(userId, req.body.productId);
-            res.status(200).json(cartItem);
+            await removeItemFromCart(userId, req.body.productId);
+            return await successResponse(res, [], MESSAGES.REMOVED_FROM_CART_SUCCESSFULLY, 204);
         } catch (error) {
             await handleError(error, res);
         }

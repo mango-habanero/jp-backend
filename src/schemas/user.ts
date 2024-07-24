@@ -1,6 +1,7 @@
-import { Document, model, Schema } from 'mongoose';
-import bcrypt from 'bcrypt';
 import { config } from '../config';
+
+import bcrypt from 'bcrypt';
+import { Document, model, Schema } from 'mongoose';
 
 export enum Role {
     admin = 'admin',
@@ -16,7 +17,7 @@ interface User {
     userId: number;
 }
 
-interface UserDocument extends User, Document {
+export interface UserDocument extends User, Document {
     matchPassword: (password: string) => Promise<boolean>;
 }
 

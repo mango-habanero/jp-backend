@@ -1,32 +1,30 @@
-import { Product, ProductDocument } from '../schemas/product';
-import { FilterQuery } from 'mongoose';
+import { IProduct, Product, ProductDocument } from '@/schemas/product';
+import { getPaginatedResults, handleDatabaseError, validateDocument } from '@/tools/helpers';
 
-export async function createProduct(productData: Partial<ProductDocument>) {
-    return Product.create(productData);
+export async function createProduct(data: IProduct) {
+    await Product.init();
+    try {
+        const product = await Product.create(data);
+        return await validateDocument<ProductDocument>(product);
+    } catch (error) {
+        await handleDatabaseError(error);
+    }
 }
 
 export async function getProduct(productId: string) {
-    return await Product.findOne({ productId: productId }).exec();
+    return Product.findOne({ productId: productId }).select('-__v');
 }
 
-export async function getProducts(cursor: string | undefined, limit: number) {
-    const query: FilterQuery<ProductDocument> = {};
-    if (cursor) {
-        query._id = { $gt: cursor };
-    }
-
-    const products = await Product.find(query).limit(limit);
-
-    const previousCursor = cursor && products.length > 0 ? products[0]._id : null;
-    const nextCursor = products.length > 0 ? products[products.length - 1]._id : null;
-
-    return { data: products, next: nextCursor, previous: previousCursor, total: products.length };
+export async function getProducts(offset: number, limit: number) {
+    return getPaginatedResults<ProductDocument>(Product, offset, limit);
 }
 
-export async function updateProduct(productId: string, updateData: Partial<ProductDocument>) {
-    return Product.findOneAndUpdate({ productId }, updateData, { new: true });
+export async function updateProduct(productId: string, updateData: Partial<IProduct>) {
+    return await Product.findOneAndUpdate({ productId }, updateData, { new: true })
+        .sort('-__v')
+        .exec();
 }
 
 export async function deleteProduct(productId: string) {
-    return Product.findOneAndDelete({ productId });
+    Product.findOneAndDelete({ productId });
 }
