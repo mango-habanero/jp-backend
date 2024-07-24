@@ -8,6 +8,7 @@ A sample backend express js application to showcase fullstack abilities for the 
 
 -   Docker (Tested on v27.0.3)
 -   Docker Compose (Tested on v2.3.3)
+-   MongoDb (Tested on v7.0.12)
 -   Node.js (Tested on v20.12.0)
 -   npm (Tested on v10.7.0)
 
@@ -72,10 +73,9 @@ A sample backend express js application to showcase fullstack abilities for the 
     npm test
     ```
 
-
 ### (Optional) Seeding database
 
 1. **Seed database**
-   ```shell
-      npm run seed
-   ```
+    ```shell
+       npm run seed
+    ```

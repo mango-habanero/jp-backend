@@ -1,16 +1,17 @@
-import compression from 'compression';
-import { config } from '../config';
-import cors from 'cors';
-import express, { Express } from 'express';
-
-import authRouter from '../routes/auth';
-import cartRouter from '../routes/cart';
-import healthCheckRouter from '../routes/health';
-import orderRouter from '../routes/order';
-import productRouter from '../routes/product';
 import initializeDatabase from './database';
 
+import { config } from '@/config';
+import { pinoHttpConfig } from '@/core/logger';
+import swaggerConfig from '@/docs/swagger.json';
+import { routes } from '@/routes';
+import compression from 'compression';
+import cors from 'cors';
+import express, { Express } from 'express';
+import pinoHttpLogger from 'pino-http';
+import swaggerUi from 'swagger-ui-express';
+
 const app: Express = express();
+
 app.use(
     cors({
         origin: (origin, callback) => {
@@ -25,14 +26,11 @@ app.use(
 app.use(compression());
 app.use(express.json());
 
-// initialize database connection.
-initializeDatabase();
+app.use(pinoHttpLogger(pinoHttpConfig));
 
-// load routes
-app.use('/health-check', healthCheckRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/cart', cartRouter);
-app.use('/api/orders', orderRouter);
-app.use('/api/products', productRouter);
+app.use('/', routes);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerConfig));
+
+initializeDatabase();
 
 export default app;

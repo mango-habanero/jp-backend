@@ -1,6 +1,7 @@
-import { Role, User } from '../../src/schemas/user';
-import { expect } from 'earl';
 import { setupDB, teardownDB } from '../fixtures';
+
+import { Role, User } from '@/schemas/user';
+import { expect } from 'earl';
 import { after, before, describe, it } from 'mocha';
 
 describe('User Model Test', function () {

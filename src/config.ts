@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ interface ExpressConfig {
 }
 
 interface Config {
+    BASE_DIR: string;
     EMAIL_ENGINE: EmailEngineConfig;
     EXPRESS: ExpressConfig;
     MONGO_URI: string;
@@ -30,6 +32,7 @@ interface Config {
 const jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export const config: Config = {
+    BASE_DIR: path.resolve(__dirname, '..'), // Setting BASE_DIR to the project root directory
     EMAIL_ENGINE: {
         API_URL: process.env.EMAIL_ENGINE_API_URL ?? 'http://127.0.0.1:3000',
         API_KEY: process.env.EMAIL_ENGINE_API_KEY ?? '',
