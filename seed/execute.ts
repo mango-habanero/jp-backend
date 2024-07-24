@@ -1,9 +1,8 @@
-import { config } from '../src/config';
-import { logger } from '../src/core/logger';
-import { Cart } from '../src/schemas/cart';
-import { Product } from '../src/schemas/product';
-import { User } from '../src/schemas/user';
-
+import { config } from '@/config';
+import { logger } from '@/core/logger';
+import { Cart } from '@/schemas/cart';
+import { Product } from '@/schemas/product';
+import { User } from '@/schemas/user';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import mongoose, { Document, Model } from 'mongoose';

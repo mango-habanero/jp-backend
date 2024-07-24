@@ -1,5 +1,4 @@
-import { config } from '../config';
-
+import { config } from '@/config';
 import fs from 'fs';
 import swaggerAutogen from 'swagger-autogen';
 
