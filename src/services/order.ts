@@ -1,32 +1,28 @@
-import { Order, OrderDocument, OrderStatus } from '../schemas/order';
+import { Order, OrderDocument, OrderStatus } from '@/schemas/order';
+import { getPaginatedResults, handleDatabaseError, validateDocument } from '@/tools/helpers';
 import { FilterQuery } from 'mongoose';
 
 export async function placeOrder(
-    userId: string,
+    userId: number,
     products: { productId: string; quantity: number }[],
     totalAmount: number,
-): Promise<OrderDocument> {
-    const order = new Order({
-        userId,
-        products,
-        totalAmount,
-        orderStatus: OrderStatus.Pending,
-    });
-    await order.save();
-    return order;
+) {
+    await Order.init();
+    try {
+        const order = await Order.create({
+            userId,
+            products,
+            totalAmount,
+            orderStatus: OrderStatus.Pending,
+        });
+        return await validateDocument<OrderDocument>(order);
+    } catch (error) {
+        await handleDatabaseError(error);
+    }
 }
 
-export async function getOrderHistory(cursor: string | undefined, limit: number, userId: string) {
+export async function getOrderHistory(offset: number, limit: number, userId: number) {
     const query: FilterQuery<OrderDocument> = { userId };
 
-    if (cursor) {
-        query._id = { $gt: cursor };
-    }
-
-    const orders = await Order.find(query).limit(limit).sort('-orderDate').exec();
-
-    const previousCursor = cursor && orders.length > 0 ? orders[0]._id : null;
-    const nextCursor = orders.length > 0 ? orders[orders.length - 1]._id : null;
-
-    return { data: orders, next: nextCursor, previous: previousCursor, total: orders.length };
+    return getPaginatedResults<OrderDocument>(Order, offset, limit, query, 'orderDate');
 }

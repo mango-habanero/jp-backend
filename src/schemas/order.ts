@@ -1,5 +1,5 @@
-import { Document, model, Schema } from 'mongoose';
 import Joi from 'joi';
+import { Document, model, Schema } from 'mongoose';
 
 export enum OrderStatus {
     Pending = 'Pending',

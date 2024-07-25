@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
-import { config } from '../config';
 import { logger } from './logger';
+
+import { config } from '@/config';
+import mongoose from 'mongoose';
 
 const initializeDatabase = async () => {
     if (config.MONGO_URI !== undefined) {

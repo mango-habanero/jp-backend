@@ -1,13 +1,13 @@
+import { paginationSchema } from '@/schemas/pagination';
+import { errorResponse, handleError } from '@/tools/helpers';
 import { NextFunction, Request, Response } from 'express';
 import { ObjectSchema } from 'joi';
-import { paginationSchema } from '../schemas/pagination';
-import { handleError } from '../tools/helpers';
 
 export const validateRequest =
     (schema: ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
         const { error } = schema.validate(req.body);
         if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+            return errorResponse(res, error.details[0].message);
         }
         next();
     };

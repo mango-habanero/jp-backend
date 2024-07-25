@@ -1,5 +1,5 @@
-import mongoose, { Document, Schema } from 'mongoose';
 import Joi from 'joi';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface CartDocument extends Document {
     userId: number;

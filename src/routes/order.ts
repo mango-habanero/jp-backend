@@ -1,18 +1,16 @@
+import { MESSAGES } from '@/core/constants';
+import { authenticateToken } from '@/middleware/auth';
+import { validatePaginatedRequest, validateRequest } from '@/middleware/validate';
+import { placeOrderSchema } from '@/schemas/order';
+import { getOrderHistory, placeOrder } from '@/services/order';
+import { handleError, successResponse, validateRequestField } from '@/tools/helpers';
 import express from 'express';
-import { authenticateToken } from '../middleware/auth';
-import { handleError } from '../tools/helpers';
-import { placeOrder, getOrderHistory } from '../services/order';
-import { validatePaginatedRequest, validateRequest } from '../middleware/validate';
-import { placeOrderSchema } from '../schemas/order';
 
 const router = express.Router();
 
 router.post('/', authenticateToken, validateRequest(placeOrderSchema), async (req, res) => {
+    const userId = await validateRequestField(req.user?.userId, res, MESSAGES.INVALID_REQUEST, 400);
     try {
-        const userId = req.user?.userId;
-        if (!userId) {
-            return res.status(401).send('Not logged in.');
-        }
         const order = await placeOrder(userId, req.body.products, req.body.products.totalAmount);
         res.status(201).json(order);
     } catch (error) {
@@ -22,15 +20,18 @@ router.post('/', authenticateToken, validateRequest(placeOrderSchema), async (re
 
 router.get('/history', authenticateToken, validatePaginatedRequest, async (req, res) => {
     try {
-        const cursor = req.query.cursor as string;
-        const limit = parseInt(req.query.limit as string);
+        const userId = await validateRequestField(
+            req.user?.userId,
+            res,
+            MESSAGES.INVALID_REQUEST,
+            401,
+        );
 
-        const userId = req.user?.userId;
-        if (!userId) {
-            return res.status(401).send('Not logged in.');
-        }
-        const orders = await getOrderHistory(cursor, limit, userId);
-        res.json(orders);
+        const limit = parseInt(req.query.limit as string);
+        const offset = parseInt(req.query.offset as string);
+
+        const orders = await getOrderHistory(offset, limit, userId);
+        return await successResponse(res, orders, MESSAGES.ORDER_HISTORY_LOADED_SUCCESSFULLY);
     } catch (error) {
         await handleError(error, res);
     }

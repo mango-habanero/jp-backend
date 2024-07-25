@@ -1,11 +1,14 @@
-import { Cart, CartDocument } from '../schemas/cart';
+import { Cart, CartDocument } from '@/schemas/cart';
+import { validateDocument } from '@/tools/helpers';
 
-export const getCartByUserId = async (userId: string): Promise<CartDocument[]> => {
-    return Cart.find({ userId });
+export const getCartByUserId = async (userId: number): Promise<CartDocument[]> => {
+    const cart = await Cart.find({ userId });
+    await validateDocument<CartDocument[]>(cart);
+    return cart;
 };
 
 export const addItemToCart = async (
-    userId: string,
+    userId: number,
     productId: string,
     quantity: number,
 ): Promise<CartDocument> => {
@@ -20,9 +23,6 @@ export const addItemToCart = async (
     }
 };
 
-export const removeItemFromCart = async (
-    userId: string,
-    productId: string,
-): Promise<CartDocument | null> => {
-    return Cart.findOneAndDelete({ userId, productId });
+export const removeItemFromCart = async (userId: number, productId: string) => {
+    Cart.findOneAndDelete({ userId, productId });
 };
