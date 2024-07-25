@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/mango-habanero/jp-backend/compare/v1.5.0...v1.5.1) (2024-07-25)
+
+
+### Performance Improvements
+
+* **app:** Refactor and Harden Backend Application Structure ([#16](https://github.com/mango-habanero/jp-backend/issues/16)) ([cfbf2f8](https://github.com/mango-habanero/jp-backend/commit/cfbf2f80879a8ffd3ed8412fe90f90f3ba3a72f0))
+
 # [1.5.0](https://github.com/mango-habanero/jp-backend/compare/v1.4.0...v1.5.0) (2024-07-22)
 
 ### Features
